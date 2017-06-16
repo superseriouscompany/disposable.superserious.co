@@ -1,0 +1,23 @@
+{
+  "name": "disposable.superserious.co",
+  "version": "1.0.0",
+  "description": "API for disposable camera",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/neilsarkar/disposable.git"
+  },
+  "author": "Neil Sarkar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/neilsarkar/disposable/issues"
+  },
+  "homepage": "https://github.com/neilsarkar/disposable#readme",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3"
+  }
+}
