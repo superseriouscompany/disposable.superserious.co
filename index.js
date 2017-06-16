@@ -7,6 +7,8 @@ const shortid    = require('shortid')
 
 app.use(bodyParser.json())
 
+app.use(express.static('photos'))
+
 app.get('/', (req, res) => {
   res.json({version: 1})
 })
@@ -27,7 +29,7 @@ const upload = multer({
 app.post('/photos', upload.single('photo'), (req, res, next) => {
   console.log(req.file && req.file.filename)
 
-  return res.json({cool: 'nice'})
+  return res.json({cool: 'nice', file: req.file && req.file.filename})
 
   if( !req.file || !req.file.filename ) {
     const contentType = req.get('Content-Type');
