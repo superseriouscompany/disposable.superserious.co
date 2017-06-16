@@ -139,6 +139,8 @@ sudo /bin/systemctl restart app.service
 sudo /bin/systemctl status app.service" | ssh "$ROOT"@"$HOST" "sudo tee /${REPO_NAME}.git/hooks/post-receive >/dev/null"
 ssh "$ROOT"@"$HOST" sudo "chmod +x /${REPO_NAME}.git/hooks/post-receive"
 
+# TODO: warn if npm start doesn't exist
+
 # Setup app service
 echo "Setting up app service..."
 echo "[Unit]
