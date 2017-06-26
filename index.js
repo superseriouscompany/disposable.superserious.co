@@ -15,6 +15,9 @@ app.get('/', (req, res) => {
 
 const upload = multer({
   limits: {fileSize: 1024 * 1024 * 2},
+  fileFilter: (req, file, cb) => {
+    return cb(null, file.mimetype.match(/^image/))
+  },
   storage: multer.diskStorage({
     destination: 'photos/',
     filename: function(req, file, cb) {
@@ -27,10 +30,6 @@ const upload = multer({
 });
 
 app.post('/photos', upload.single('photo'), (req, res, next) => {
-  console.log(req.file && req.file.filename)
-
-  return res.json({cool: 'nice', file: req.file && req.file.filename})
-
   if( !req.file || !req.file.filename ) {
     const contentType = req.get('Content-Type');
     if( !contentType || !contentType.match(/multipart\/form-data/i) ) {
@@ -40,9 +39,16 @@ app.post('/photos', upload.single('photo'), (req, res, next) => {
     }
 
     return res.status(400).json({
-      message: "You must attach a valid photo in the `photo` field of your multipart request."
+      message: "You must attach a valid png, jpeg or gif in the `photo` field of your multipart request."
     });
   }
+  if( !req.file.filename.match(/\.(png|jpg|jpeg|gif|bmp)/) ) {
+    return res.status(400).json({
+      message: `.${req.file.filename.split('.').slice(-1)[0]} is not a valid file extension. Please upload a .png, .jpg, .jpeg, or .gif`
+    })
+  }
+
+  return res.json({file: req.file && req.file.filename, id: req.file && req.file.filename})
 })
 
 if( process.env.NODE_ENV != 'production' && global.TEST_MODE ) {

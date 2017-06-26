@@ -3,8 +3,8 @@ const expect = require('expect')
 
 module.exports = () => {
   it("works", function () {
-    return api('/').then((response) => {
-      expect(response.body.version).toEqual(1, `Expected version 1 in ${JSON.stringify(response.body)}`)
+    return api('/').then((r) => {
+      expect(r.body.version).toEqual(1, `Expected version 1 in ${JSON.stringify(r.body)}`)
     })
   });
 }

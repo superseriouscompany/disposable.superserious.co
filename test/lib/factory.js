@@ -11,6 +11,8 @@ module.exports = {
       photo: fs.createReadStream(params.file),
     }
 
-    return api.post('/photos', {formData: formData})
+    return api.post('/photos', {formData: formData}).then((r) => {
+      return r.body
+    })
   }
 }
