@@ -1,5 +1,6 @@
 const expect  = require('expect')
 const factory = require('../lib/factory')
+const api     = require('../lib/api')
 const h       = require('../lib/helpers')
 
 module.exports = function() {
@@ -18,11 +19,13 @@ module.exports = function() {
     })
   });
 
-  it("400s on missing file", function () {
-
+  it("400s on empty file", function () {
   });
 
-  it("400s on empty file", function () {
-
+  it("400s on missing file", function () {
+    return api.post('/photos', {formData: {nope: 'nerp'}}).then(h.shouldFail).catch((err) => {
+      expect(err.statusCode).toEqual(400)
+      expect(err.response.body.message).toMatch('attach')
+    })
   });
 }
