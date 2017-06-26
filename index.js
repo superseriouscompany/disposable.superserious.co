@@ -49,6 +49,15 @@ app.post('/photos', upload.single('photo'), (req, res, next) => {
   }
 })
 
+if( process.env.NODE_ENV != 'production' && global.TEST_MODE ) {
+  module.exports = function(port) {
+    const ref    = app.listen(port);
+    const handle = ref.close.bind(ref);
+    return handle;
+  }
+  return;
+}
+
 app.listen(port, () => {
   console.log(`Listening on ${port}...`)
 })
