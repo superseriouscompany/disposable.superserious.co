@@ -14,5 +14,16 @@ module.exports = {
     return api.post('/photos', {formData: formData}).then((r) => {
       return r.body
     })
+  },
+
+  user: (params) => {
+    params = Object.assign({
+      name: 'Sancho Panza',
+      email: 'sanchopanza@gmail.com',
+    }, params)
+
+    return api.post('/users', {body: params}).then((r) => {
+      return r.body
+    })
   }
 }

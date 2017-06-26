@@ -48,4 +48,8 @@ module.exports = function() {
       expect(ids).toContain(id)
     })
   });
+
+  it('uploads to s3')
+
+  it('stores to dynamo')
 }
