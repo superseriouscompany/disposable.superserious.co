@@ -12,4 +12,17 @@ module.exports = function() {
       expect(u.access_token).toExist(`Expected ${JSON.stringify(u)} to have an access token`)
     })
   });
+
+  describe("errors on missing fields", function () {
+    ['name', 'email'].forEach((field) => {
+      it(`requires ${field}`, function() {
+        var body = {}
+        body[field] = null
+        return factory.user(body).then(h.shouldFail).catch((err) => {
+          expect(err.statusCode).toEqual(400)
+          expect(err.response.body.message).toMatch(field)
+        })
+      })
+    })
+  });
 }

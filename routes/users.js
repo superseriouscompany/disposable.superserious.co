@@ -7,6 +7,9 @@ module.exports = function(app) {
     models.user.create(req.body).then((u) => {
       res.json(u)
     }).catch((err) => {
+      if( err.message.match(/ValidationError/) ) {
+        return res.status(400).json({message: err.message})
+      }
       next(err)
     })
   })

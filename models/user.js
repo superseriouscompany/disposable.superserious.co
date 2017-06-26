@@ -13,6 +13,12 @@ function all() {
 
 function create(user) {
   return Promise.resolve().then(() => {
+    ['email', 'name'].forEach((field) => {
+      if( !user[field] ) {
+        throw new Error('ValidationError: `'+field+'` is required')
+      }
+    })
+
     const id          = shortid.generate()
     const accessToken = shortid.generate()
     user.id           = id
