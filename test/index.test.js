@@ -1,6 +1,6 @@
 global.TEST_MODE = true
-const expect = require('expect')
-const api    = require('./lib/api')
+const expect     = require('expect')
+const api        = require('./lib/api')
 
 describe("disposable api", function() {
   this.slow(1000)

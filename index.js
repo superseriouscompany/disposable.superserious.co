@@ -13,10 +13,6 @@ app.get('/', (req, res) => {
   res.json({version: 1})
 })
 
-app.get('/hello', (req, res) => {
-  res.json({time: new Date})
-})
-
 const upload = multer({
   limits: {fileSize: 1024 * 1024 * 2},
   storage: multer.diskStorage({
