@@ -20,6 +20,12 @@ module.exports = function() {
   });
 
   it("400s on empty file", function () {
+    return factory.photo({
+      file: `${__dirname}/../fixtures/nope.jpg`
+    }).then(h.shouldFail).catch((err) => {
+      expect(err.statusCode).toEqual(400)
+      expect(err.response.body.message).toMatch('empty')
+    })
   });
 
   it("400s on missing file", function () {

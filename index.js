@@ -42,9 +42,9 @@ app.post('/photos', upload.single('photo'), (req, res, next) => {
       message: "You must attach a valid png, jpeg or gif in the `photo` field of your multipart request."
     });
   }
-  if( !req.file.filename.match(/\.(png|jpg|jpeg|gif|bmp)/) ) {
+  if( !req.file.size ) {
     return res.status(400).json({
-      message: `.${req.file.filename.split('.').slice(-1)[0]} is not a valid file extension. Please upload a .png, .jpg, .jpeg, or .gif`
+      message: "Uploaded photo file was empty :("
     })
   }
 
