@@ -18,6 +18,10 @@ function create(user) {
         throw new Error('ValidationError: `'+field+'` is required')
       }
     })
+    if( users.find((u) => { return u.email === user.email }) ) {
+      throw new Error('ConflictError: email is taken')
+    }
+
 
     const id          = shortid.generate()
     const accessToken = shortid.generate()

@@ -7,8 +7,11 @@ module.exports = function(app) {
     models.user.create(req.body).then((u) => {
       res.json(u)
     }).catch((err) => {
-      if( err.message.match(/ValidationError/) ) {
+      if( err.message.match(/^ValidationError/) ) {
         return res.status(400).json({message: err.message})
+      }
+      if( err.message.match(/^ConflictError/) ) {
+        return res.status(409).json({message: err.message})
       }
       next(err)
     })

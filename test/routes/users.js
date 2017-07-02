@@ -25,4 +25,12 @@ module.exports = function() {
       })
     })
   });
+
+  it('409s on same email', function() {
+    return factory.user({email: 'nope@lame.com'}).then(() => {
+      return factory.user({email: 'nope@lame.com'})
+    }).then(h.shouldFail).catch((err) => {
+      expect(err.statusCode).toEqual(409)
+    })
+  })
 }
