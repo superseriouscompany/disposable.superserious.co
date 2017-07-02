@@ -35,21 +35,23 @@ module.exports = function() {
     })
   });
 
-  it("returns posted photos", function () {
-    var id
-
-    return factory.photo().then((photo) => {
-      id = photo.id
-
-      return api('/photos')
-    }).then((response) => {
-      expect(response.body.photos).toExist(`Expected photos in ${JSON.stringify(response.body)}`)
-      const ids = response.body.photos.map((p) => { return p.id} )
-      expect(ids).toContain(id)
-    })
-  });
-
   it('uploads to s3')
 
   it('stores to dynamo')
+
+  describe('albums', function () {
+    it("returns posted photos", function () {
+      var id
+
+      return factory.photo().then((photo) => {
+        id = photo.id
+
+        return api('/photos')
+      }).then((response) => {
+        expect(response.body.photos).toExist(`Expected photos in ${JSON.stringify(response.body)}`)
+        const ids = response.body.photos.map((p) => { return p.id} )
+        expect(ids).toContain(id)
+      })
+    });
+  });
 }
