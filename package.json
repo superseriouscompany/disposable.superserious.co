@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "expect": "^1.20.2",
+    "mocha": "^3.4.2",
     "request": "^2.81.0",
     "request-promise": "^4.2.1",
     "tinystub": "^1.0.1"

@@ -1,10 +1,11 @@
-const api    = require('../lib/api')
-const expect = require('expect')
+const expect     = require('expect')
+const api        = require('../lib/api')
 
-module.exports = () => {
-  it("works", function () {
-    return api('/').then((r) => {
-      expect(r.body.version).toEqual(1, `Expected version 1 in ${JSON.stringify(r.body)}`)
+module.exports = function() {
+  it("provides healthcheck", function () {
+    return api('/').then((response) => {
+      expect(response.statusCode).toEqual(200)
+      expect(response.body.version).toEqual(1)
     })
-  });
+  })
 }
