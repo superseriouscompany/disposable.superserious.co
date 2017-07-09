@@ -9,7 +9,7 @@ module.exports = function() {
   it("builds from factory", function () {
     return factory.user().then((u) => {
       expect(u.id).toExist(`Expected ${JSON.stringify(u)} to have an ID`)
-      expect(u.access_token).toExist(`Expected ${JSON.stringify(u)} to have an access token`)
+      expect(u.accessToken).toExist(`Expected ${JSON.stringify(u)} to have an access token`)
     })
   });
 
