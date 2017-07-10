@@ -10,7 +10,7 @@ function shouldFail(r) {
     err.response = { body: r.body };
   } else {
     err = new Error(`Expected an unsuccessful response, got: ${JSON.stringify(r)}`);
-    err.statusCode = 420;
+    err.statusCode = 'No Status Code (Should have failed)';
   }
   err.name = 'ShouldHaveFailed';
   throw err;

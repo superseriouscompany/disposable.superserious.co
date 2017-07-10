@@ -1,33 +1,37 @@
 const shortid = require('shortid')
-
-var users = []
+const uuid    = require('uuid')
+const config  = require('../config')
+const client  = require('../db/client')(config.AWS, config.dynamoEndpoint)
 
 module.exports = {
   create: create,
-  all: all,
-}
-
-function all() {
-  return Promise.resolve(users)
 }
 
 function create(user) {
   return Promise.resolve().then(() => {
-    ['email', 'name'].forEach((field) => {
-      if( !user[field] ) {
-        throw new Error('ValidationError: `'+field+'` is required')
-      }
+    if( !user.name ) { throw new Error('ValidationError: name is required') }
+    if( !user.email ) { throw new Error('ValidationError: email is required') }
+    user.id          = shortid.generate()
+    user.createdAt   = user.createdAt || +new Date
+    user.accessToken = uuid.v1()
+    return client.queryAsync({
+      TableName: config.usersTableName,
+      IndexName: 'email',
+      KeyConditionExpression: 'email = :email',
+      ExpressionAttributeValues: {
+        ':email': user.email,
+      },
+      Limit: 1
     })
-    if( users.find((u) => { return u.email === user.email }) ) {
-      throw new Error('ConflictError: email is taken')
+  }).then((conflict) => {
+    if( conflict.Items.length ) {
+      throw new Error('ConflictError: email must be unique')
     }
-
-
-    const id          = shortid.generate()
-    const accessToken = shortid.generate()
-    user.id           = id
-    user.access_token = accessToken
-    users.push(user)
+    return client.putAsync({
+      TableName: config.usersTableName,
+      Item:      user,
+    })
+  }).then(() => {
     return user
   })
 }
