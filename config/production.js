@@ -1,4 +1,5 @@
 module.exports = {
   usersTableName:  'disposableUsers',
-  photosTableName: 'disposablePhotos'
+  photosTableName: 'disposablePhotos',
+  photosBucket:    'disposable.superserious.co-photos',
 }

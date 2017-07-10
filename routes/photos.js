@@ -1,5 +1,9 @@
-const multer     = require('multer')
-const shortid    = require('shortid')
+const multer  = require('multer')
+const shortid = require('shortid')
+const config  = require('../config')
+const fs      = require('fs')
+const s3      = new config.AWS.S3()
+
 const models = {
   photo: require('../models/photo')
 }
@@ -46,10 +50,22 @@ module.exports = function(app) {
       })
     }
 
-    models.photo.create({
-      filename: req.file.filename,
-    }).then((photo) => {
-      res.json(photo)
-    }).catch(next)
+    s3.upload({
+      Bucket:      config.photosBucket,
+      Key:         req.file.filename,
+      Body:        fs.createReadStream(`./photos/${req.file.filename}`),
+      ACL:         'public-read',
+      ContentType: req.file.mimetype,
+    }, (err, s3Payload) => {
+      if( err ) { return next(err) }
+      if( !s3Payload || !s3Payload.Location ) { return next(new Error(`s3 returned no url ${JSON.stringify(s3Payload)}`))}
+
+      return models.photo.create({
+        filename: req.file.filename,
+        url:      s3Payload.Location,
+      }).then((photo) => {
+        res.json(photo)
+      }).catch(next)
+    })
   })
 }

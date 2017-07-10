@@ -11,7 +11,8 @@ module.exports = Object.assign({
   baseUrl:         'https://superserious.ngrok.io',
   awsRegion:       'us-west-2',
   usersTableName:  'disposableUsersStaging',
-  photosTableName: 'disposablePhotosStaging'
+  photosTableName: 'disposablePhotosStaging',
+  photosBucket:    'disposable.superserious.co-photos-staging',
 }, require(`./${environment}`));
 
 AWS.config.update({

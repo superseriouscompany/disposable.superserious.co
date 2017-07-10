@@ -49,8 +49,8 @@ module.exports = function() {
         return api('/photos')
       }).then((response) => {
         expect(response.body.photos).toExist(`Expected photos in ${JSON.stringify(response.body)}`)
-        const ids       = response.body.photos.map((p) => { return p.id} )
-        const filenames = response.body.photos.map((p) => { return p.filename} )
+        const ids       = response.body.photos.map((p) => { return p.id } )
+        const filenames = response.body.photos.map((p) => { return p.filename } )
         expect(ids).toContain(id)
         expect(filenames).toContain(filename)
       })
