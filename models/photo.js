@@ -1,4 +1,7 @@
-var photos = []
+const shortid = require('shortid')
+const uuid    = require('uuid')
+const config  = require('../config')
+const client  = require('../db/client')(config.AWS, config.dynamoEndpoint)
 
 module.exports = {
   create: create,
@@ -6,12 +9,23 @@ module.exports = {
 }
 
 function all() {
-  return Promise.resolve(photos)
+  return client.scanAsync({
+    TableName: config.photosTableName
+  }).then((payload) => {
+    return payload.Items
+  })
 }
 
 function create(photo) {
   return Promise.resolve().then(() => {
-    photos.push(photo)
+    photo.id      = +new Date
+    photo.groupId = 'everyone'
+  }).then(() => {
+    return client.putAsync({
+      TableName: config.photosTableName,
+      Item:      photo,
+    })
+  }).then(() => {
     return photo
   })
 }

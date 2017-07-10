@@ -47,9 +47,9 @@ module.exports = function(app) {
     }
 
     models.photo.create({
-      id: req.file.filename
-    })
-
-    return res.json({file: req.file.filename, id: req.file.filename})
+      filename: req.file.filename,
+    }).then((photo) => {
+      res.json(photo)
+    }).catch(next)
   })
 }

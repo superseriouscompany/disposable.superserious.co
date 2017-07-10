@@ -8,9 +8,10 @@ if( global.TEST_MODE ) {
 }
 
 module.exports = Object.assign({
-  baseUrl:        'https://superserious.ngrok.io',
-  awsRegion:      'us-west-2',
-  usersTableName: 'disposable.superserious.coUsersStaging'
+  baseUrl:         'https://superserious.ngrok.io',
+  awsRegion:       'us-west-2',
+  usersTableName:  'disposableUsersStaging',
+  photosTableName: 'disposablePhotosStaging'
 }, require(`./${environment}`));
 
 AWS.config.update({

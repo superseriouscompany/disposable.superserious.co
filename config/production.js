@@ -1,3 +1,4 @@
 module.exports = {
-  usersTableName: 'disposable.superserious.coUsers'
+  usersTableName:  'disposableUsers',
+  photosTableName: 'disposablePhotos'
 }

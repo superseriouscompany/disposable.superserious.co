@@ -8,7 +8,7 @@ module.exports = {
       "AttributeType":"S"
     },
     {
-      "AttributeName":"access_token",
+      "AttributeName":"accessToken",
       "AttributeType":"S"
     },
     {
@@ -24,10 +24,10 @@ module.exports = {
   ],
   "GlobalSecondaryIndexes":[
     {
-      "IndexName": "access_token",
+      "IndexName": "accessToken",
       "KeySchema": [
         {
-          "AttributeName": "access_token",
+          "AttributeName": "accessToken",
           "KeyType": "HASH",
         },
       ],
