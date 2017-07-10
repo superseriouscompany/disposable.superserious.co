@@ -11,6 +11,10 @@ module.exports = {
       "AttributeName":"access_token",
       "AttributeType":"S"
     },
+    {
+      "AttributeName":"email",
+      "AttributeType":"S"
+    },
   ],
   "KeySchema":[
     {
@@ -29,6 +33,22 @@ module.exports = {
       ],
       "Projection": {
         "ProjectionType": "ALL",
+      },
+      "ProvisionedThroughput": {
+        "ReadCapacityUnits": 1,
+        "WriteCapacityUnits": 1,
+      }
+    },
+    {
+      "IndexName": "email",
+      "KeySchema": [
+        {
+          "AttributeName": "email",
+          "KeyType": "HASH",
+        },
+      ],
+      "Projection": {
+        "ProjectionType": "KEYS_ONLY",
       },
       "ProvisionedThroughput": {
         "ReadCapacityUnits": 1,

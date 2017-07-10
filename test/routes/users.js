@@ -20,7 +20,7 @@ module.exports = function() {
         body[field] = null
         return factory.user(body).then(h.shouldFail).catch((err) => {
           expect(err.statusCode).toEqual(400)
-          expect(err.response.body.message).toMatch(field)
+          expect(err.response.body.error).toMatch(field)
         })
       })
     })

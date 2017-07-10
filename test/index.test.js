@@ -69,7 +69,6 @@ function checkDynamo(cb) {
 }
 
 function createTables(cb) {
-  console.log('creating tables...')
   var env = Object.assign({}, process.env, {NODE_ENV: 'test'})
   exec('node db/createTables', {env: env}, cb)
 }
