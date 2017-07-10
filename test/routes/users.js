@@ -27,8 +27,10 @@ module.exports = function() {
   });
 
   it('409s on same email', function() {
-    return factory.user({email: 'nope@lame.com'}).then(() => {
-      return factory.user({email: 'nope@lame.com'})
+    const email = `${Math.random()}@nope.com`
+
+    return factory.user({email: email}).then(() => {
+      return factory.user({email: email})
     }).then(h.shouldFail).catch((err) => {
       expect(err.statusCode).toEqual(409)
     })

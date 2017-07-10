@@ -19,7 +19,7 @@ module.exports = {
   user: (params) => {
     params = Object.assign({
       name: 'Sancho Panza',
-      email: 'sanchopanza@gmail.com',
+      email: `sanchopanza${Math.random()}@gmail.com`,
     }, params)
 
     return api.post('/users', {body: params}).then((r) => {

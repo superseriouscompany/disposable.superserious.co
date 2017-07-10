@@ -37,8 +37,6 @@ module.exports = function() {
 
   it('uploads to s3')
 
-  it('stores to dynamo')
-
   describe('albums', function () {
     it("returns posted photos", function () {
       var id
