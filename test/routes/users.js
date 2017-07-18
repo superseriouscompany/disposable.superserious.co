@@ -35,6 +35,7 @@ module.exports = function(ctx) {
     }).then(h.shouldFail).catch((err) => {
       expect(err.statusCode).toEqual(409)
 
+      if( process.env.LIVE ) { return }
       expect(ctx.stub.calls.length).toEqual(1)
       const call = ctx.stub.calls[0]
       expect(call.url).toEqual('/mailgun')

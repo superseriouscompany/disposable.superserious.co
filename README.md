@@ -13,10 +13,6 @@
 
     $ npm start
 
-## Running locally
-
-    $ npm run dev
-
 ## Testing
 
     $ npm test

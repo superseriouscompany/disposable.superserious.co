@@ -21,9 +21,9 @@ function send(data) {
     }, data)
 
 
-    return !global.TEST_MODE
-      ? liveRequest(data)
-      : stubRequest(data)
+    return global.TEST_MODE && !process.env.LIVE
+      ? stubRequest(data)
+      : liveRequest(data)
   })
 }
 
