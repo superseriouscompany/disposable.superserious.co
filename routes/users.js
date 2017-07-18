@@ -17,7 +17,7 @@ function create(req, res, next) {
     if( err.message.match(/^ConflictError/) ) {
       return models.mailgun.send({
         to:   req.body.email,
-        text: `Someone (hopefully you!) tried to log in to Disposable. Click this link to log in: https://disposable.superserious.co/login/${err.user.accessToken}`,
+        text: `Someone (hopefully you!) tried to log in to Disposable. Click this link to log in: disposable://s/${err.user.accessToken}`,
         subject: 'Log-in information for your Disposable account',
       }).then(() => {
         return res.status(409).json({error: err.message})
