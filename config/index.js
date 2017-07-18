@@ -13,6 +13,7 @@ module.exports = Object.assign({
   usersTableName:  'disposableUsersStaging',
   photosTableName: 'disposablePhotosStaging',
   photosBucket:    'disposable.superserious.co-photos-staging',
+  mailgunKey:      secrets.mailgunKey,
 }, require(`./${environment}`));
 
 AWS.config.update({

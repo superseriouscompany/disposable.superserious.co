@@ -3,7 +3,7 @@ const factory = require('../lib/factory')
 const api     = require('../lib/api')
 const h       = require('../lib/helpers')
 
-module.exports = function() {
+module.exports = function(ctx) {
   var user;
 
   it("builds from factory", function () {
@@ -26,13 +26,25 @@ module.exports = function() {
     })
   });
 
-  it('409s on same email', function() {
-    const email = `${Math.random()}@nope.com`
-
-    return factory.user({email: email}).then(() => {
+  it('409s on same email and sends login', function() {
+    const email = `neil${Math.random()}@superserious.co`
+    var accessToken
+    return factory.user({email: email}).then((u) => {
+      accessToken = u.accessToken
       return factory.user({email: email})
     }).then(h.shouldFail).catch((err) => {
       expect(err.statusCode).toEqual(409)
+
+      expect(ctx.stub.calls.length).toEqual(1)
+      const call = ctx.stub.calls[0]
+      expect(call.url).toEqual('/mailgun')
+      expect(call.body.from).toEqual('Disposable <hi@mg.superserious.co>')
+      expect(call.body.to).toEqual(email)
+      expect(call.body.subject).toEqual('Log-in information for your Disposable account')
+      expect(call.body.text).toMatch('Click this link')
+      expect(call.body.text).toMatch(accessToken)
+      expect(call.body.html).toMatch('Click this link')
+      expect(call.body.html).toMatch(accessToken)
     })
   })
 }

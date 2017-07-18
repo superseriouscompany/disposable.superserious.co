@@ -1,5 +1,6 @@
 const models = {
-  user: require('../models/user'),
+  user:    require('../models/user'),
+  mailgun: require('../models/mailgun'),
 }
 
 module.exports = function(app) {
@@ -14,7 +15,13 @@ function create(req, res, next) {
       return res.status(400).json({error: err.message})
     }
     if( err.message.match(/^ConflictError/) ) {
-      return res.status(409).json({error: err.message})
+      return models.mailgun.send({
+        to:   req.body.email,
+        text: `Someone (hopefully you!) tried to log in to Disposable. Click this link to log in: https: //disposable.superserious.co/login/${err.user.accessToken}`,
+        subject: 'Log-in information for your Disposable account',
+      }).then(() => {
+        return res.status(409).json({error: err.message})
+      }).catch(next)
     }
     next(err)
   })

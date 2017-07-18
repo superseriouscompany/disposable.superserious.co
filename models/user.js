@@ -24,9 +24,16 @@ function create(user) {
       Limit: 1
     })
   }).then((conflict) => {
-    if( conflict.Items.length ) {
-      throw new Error('ConflictError: email must be unique')
+    if( conflict.Items.length > 1 ) {
+      throw new Error('InternalConsistencyError: multiple emails returned for ' + user.email)
     }
+
+    if( conflict.Items.length === 1 ) {
+      var err  = new Error('ConflictError: email must be unique')
+      err.user = conflict.Items[0]
+      throw err
+    }
+
     return client.putAsync({
       TableName: config.usersTableName,
       Item:      user,

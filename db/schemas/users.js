@@ -48,7 +48,7 @@ module.exports = {
         },
       ],
       "Projection": {
-        "ProjectionType": "KEYS_ONLY",
+        "ProjectionType": "ALL",
       },
       "ProvisionedThroughput": {
         "ReadCapacityUnits": 1,
