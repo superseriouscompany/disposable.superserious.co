@@ -9,7 +9,6 @@ module.exports = {
 
 function create(user) {
   return Promise.resolve().then(() => {
-    if( !user.name ) { throw new Error('ValidationError: name is required') }
     if( !user.email ) { throw new Error('ValidationError: email is required') }
     user.id          = shortid.generate()
     user.createdAt   = user.createdAt || +new Date
