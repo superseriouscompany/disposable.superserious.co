@@ -1,3 +1,4 @@
+const auth = require('../middleware/auth')
 const models = {
   user:    require('../models/user'),
   mailgun: require('../models/mailgun'),
@@ -5,6 +6,8 @@ const models = {
 
 module.exports = function(app) {
   app.post('/users', create)
+  app.get('/me', auth, get)
+  app.patch('/me', auth, update)
 }
 
 function create(req, res, next) {
@@ -25,5 +28,18 @@ function create(req, res, next) {
       }).catch(next)
     }
     next(err)
+  })
+}
+
+function update(req, res, next) {
+  const user = Object.assign({}, req.body, {id: req.user.id})
+  return models.user.update(user).then(() => {
+    return res.sendStatus(204)
+  }).catch(next)
+}
+
+function get(req, res, next) {
+  return res.json({
+    name: req.user.name,
   })
 }

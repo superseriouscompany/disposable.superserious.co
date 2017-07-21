@@ -18,12 +18,17 @@ module.exports = {
 
   user: (params) => {
     params = Object.assign({
-      name: 'Sancho Panza',
       email: `sanchopanza${Math.random()}@gmail.com`,
     }, params)
 
     return api.post('/users', {body: params}).then((r) => {
-      return r.body
+      const user = r.body
+      Object.defineProperty(user, 'api', {
+        get: function() {
+          return api.authenticated(user.accessToken)
+        }
+      })
+      return user
     })
   }
 }

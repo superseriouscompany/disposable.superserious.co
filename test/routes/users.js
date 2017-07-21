@@ -4,7 +4,7 @@ const api     = require('../lib/api')
 const h       = require('../lib/helpers')
 
 module.exports = function(ctx) {
-  var user;
+  var pass = {};
 
   it("builds from factory", function () {
     return factory.user().then((u) => {
@@ -14,7 +14,7 @@ module.exports = function(ctx) {
   });
 
   describe("errors on missing fields", function () {
-    ['name', 'email'].forEach((field) => {
+    ['email'].forEach((field) => {
       it(`requires ${field}`, function() {
         var body = {}
         body[field] = null
@@ -48,4 +48,16 @@ module.exports = function(ctx) {
       expect(call.body.html).toMatch(accessToken)
     })
   })
+
+  it("allows setting name after registration", function () {
+    return factory.user().then((user) => {
+      pass.user = user
+      return pass.user.api.patch('/me', { body: { name: 'Sacagewea' } })
+    }).then((response) => {
+      expect(response.statusCode).toEqual(204)
+      return pass.user.api.get('/me')
+    }).then((response) => {
+      expect(response.body.name).toEqual('Sacagewea')
+    })
+  });
 }
