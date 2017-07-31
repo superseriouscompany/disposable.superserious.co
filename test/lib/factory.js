@@ -3,15 +3,16 @@ const api = require('./api')
 
 module.exports = {
   photo: (params) => {
-    params = Object.assign({
-      file: `${__dirname}/../fixtures/photo.jpg`
+    params = Object.assign({}, {
+      file: `${__dirname}/../fixtures/photo.jpg`,
+      albumName: 'everyone',
     }, params)
 
     const formData = {
       photo: fs.createReadStream(params.file),
     }
 
-    return api.post('/photos', {formData: formData}).then((r) => {
+    return api.post(`/albums/${params.albumName}/photos`, {formData: formData}).then((r) => {
       return r.body
     })
   },

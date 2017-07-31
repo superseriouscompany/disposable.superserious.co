@@ -25,13 +25,13 @@ module.exports = function(app) {
     }),
   });
 
-  app.get('/photos', (req, res, next) => {
-    models.photo.all().then((photos) => {
+  app.get('/albums/:albumName/photos', (req, res, next) => {
+    models.photo.findByGroupId(req.params.albumName).then((photos) => {
       return res.json({photos: photos})
     }).catch(next)
   })
 
-  app.post('/photos', upload.single('photo'), (req, res, next) => {
+  app.post('/albums/:albumName/photos', upload.single('photo'), (req, res, next) => {
     if( !req.file || !req.file.filename ) {
       const contentType = req.get('Content-Type');
       if( !contentType || !contentType.match(/multipart\/form-data/i) ) {
@@ -50,7 +50,7 @@ module.exports = function(app) {
       })
     }
 
-    const groupId = req.body.groupId || 'everyone'
+    const groupId = req.params.albumName
 
     s3.upload({
       Bucket:      config.photosBucket,

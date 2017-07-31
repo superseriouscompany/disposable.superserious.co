@@ -4,6 +4,8 @@ const api     = require('../lib/api')
 const h       = require('../lib/helpers')
 
 module.exports = function() {
+  var pass = {}
+
   it("builds from factory", function () {
     return factory.photo().then((photo) => {
       expect(photo.id).toExist(`Expected ${JSON.stringify(photo)} to have an ID`)
@@ -29,7 +31,7 @@ module.exports = function() {
   });
 
   it("400s on missing file", function () {
-    return api.post('/photos', {formData: {nope: 'nerp'}}).then(h.shouldFail).catch((err) => {
+    return api.post('/albums/whatever/photos', {formData: {nope: 'nerp'}}).then(h.shouldFail).catch((err) => {
       expect(err.statusCode).toEqual(400)
       expect(err.response.body.message).toMatch('attach')
     })
@@ -46,13 +48,30 @@ module.exports = function() {
         filename = photo.filename
 
         expect(photo.id && photo.filename).toExist(`Expected ${photo.id} and ${photo.filename} to exist`)
-        return api('/photos')
+        return api('/albums/everyone/photos')
       }).then((response) => {
         expect(response.body.photos).toExist(`Expected photos in ${JSON.stringify(response.body)}`)
         const ids       = response.body.photos.map((p) => { return p.id } )
         const filenames = response.body.photos.map((p) => { return p.filename } )
         expect(ids).toContain(id)
         expect(filenames).toContain(filename)
+      })
+    });
+
+    it("splits photos by album", function () {
+      pass.albumName = Math.random()
+
+      return Promise.all([
+        factory.photo({albumName: pass.albumName}),
+        factory.photo({albumName: 'nope'}),
+      ]).then((v) => {
+        pass.id = v[0].id
+        return api(`/albums/${pass.albumName}/photos`)
+      }).then((response) => {
+        const photos = response.body.photos
+        expect(photos).toExist(JSON.stringify(response.body))
+        expect(photos.length).toEqual(1, JSON.stringify(response.body))
+        expect(photos[0].id).toEqual(pass.id)
       })
     });
   });

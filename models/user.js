@@ -98,8 +98,8 @@ function findByAccessToken(accessToken) {
      ':accessToken': accessToken
    },
    Limit:                     1,
- }).then(function(user) {
-   if( !user.Items.length ) { throw new Error('NotFound: user not found') }
-   return user.Items[0]
+ }).then(function(payload) {
+   if( !payload.Items.length ) { throw new Error('NotFound: user not found') }
+   return payload.Items[0]
  })
 }
