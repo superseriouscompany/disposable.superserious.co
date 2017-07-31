@@ -50,6 +50,8 @@ module.exports = function(app) {
       })
     }
 
+    const groupId = req.body.groupId || 'everyone'
+
     s3.upload({
       Bucket:      config.photosBucket,
       Key:         req.file.filename,
@@ -63,6 +65,7 @@ module.exports = function(app) {
       return models.photo.create({
         filename: req.file.filename,
         url:      s3Payload.Location,
+        groupId:  groupId,
       }).then((photo) => {
         res.json(photo)
       }).catch(next)

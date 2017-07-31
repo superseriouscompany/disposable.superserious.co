@@ -19,7 +19,7 @@ function all() {
 function create(photo) {
   return Promise.resolve().then(() => {
     photo.id      = +new Date
-    photo.groupId = 'everyone'
+    photo.groupId = photo.groupId || 'everyone'
   }).then(() => {
     return client.putAsync({
       TableName: config.photosTableName,
